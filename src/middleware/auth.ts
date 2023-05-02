@@ -1,5 +1,5 @@
 import jwksClient from "jwks-rsa";
-import { verify } from "jsonwebtoken";
+import { JwtPayload, verify } from "jsonwebtoken";
 import { TRPCError } from "@trpc/server";
 import { t } from "../trpc";
 import { AUTH0_ISSUER_BASE_URL } from "../environment/environment";
@@ -16,10 +16,9 @@ const isAuthed = t.middleware(async ({ next, ctx }) => {
     });
 
   try {
-    const key = await client.getSigningKey(ctx.kid);
-    const signingKey = key.getPublicKey();
-    const decodedToken = verify(ctx.token, signingKey);
-    if (typeof decodedToken === "string") return next();
+    const signingKey = await client.getSigningKey(ctx.kid);
+    const pubKey = signingKey.getPublicKey();
+    const decodedToken = verify(ctx.token, pubKey) as JwtPayload;
     const scopes = decodedToken?.scope?.split(" ");
 
     return next({
@@ -36,19 +35,14 @@ const isAuthed = t.middleware(async ({ next, ctx }) => {
 
 const validateScopes = (requiredScopes: string[]) => {
   return t.middleware(async ({ next, ctx }) => {
-    const hasValidScopes = requiredScopes.every(scope =>
-      ctx.scopes?.includes(scope),
-    );
-    if (!hasValidScopes)
-      throw new TRPCError({ code: "UNAUTHORIZED", message: `Invalid scope` });
+    
     return next();
-  });
+  })
 };
 
 export const validTokenAndScopeProcedure = (requiredScopes: string[]) => {
-  // @ts-expect-error temp type error in the trpc library
   const middleware = isAuthed.unstable_pipe(validateScopes(requiredScopes));
   return t.procedure.use(middleware);
 };
 
-// export const validTokenProcedure = t.procedure.use(isAuthed)
+export const validTokenProcedure = t.procedure.use(isAuthed)

@@ -2,84 +2,37 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { Todo } from "../types/Todo";
 import {
+  getTodos,
+  getTodoById,
   addTodo,
   completeTodo,
   deleteTodo,
-  getTodoById,
-  getTodos,
 } from "../db/todo";
 import { t, router } from "../trpc";
-import { validTokenAndScopeProcedure } from "../middleware/auth";
+import {
+  validTokenAndScopeProcedure,
+  validTokenProcedure,
+} from "../middleware/auth";
 
 const publicProcedure = t.procedure;
+
 const readProcedure = validTokenAndScopeProcedure(["read:todos"]);
 const editProcedure = validTokenAndScopeProcedure(["edit:todos"]);
 const deleteProcedure = validTokenAndScopeProcedure(["delete:todos"]);
 
 export const todoRouter = router({
-  getTodos: publicProcedure
-    .meta({ openapi: { method: "GET", path: "/todos" } })
-    .input(z.void())
-    .output(z.array(Todo))
-    .query(() => {
-      return getTodos();
-    }),
+  // getTodos: "/todos" 
+  // TODO
+  
+  // getTodo "/todo/{id}"
+  // TODO
 
-  getTodo: readProcedure
-    .meta({ openapi: { method: "GET", path: "/todos/{id}", protect: true } })
-    .input(z.object({ id: z.string().uuid() }))
-    .output(Todo)
-    .query(req => {
-      const todo = getTodoById(req.input.id);
-      if (!todo) {
-        throw new TRPCError({
-          message: "Todo not found",
-          code: "NOT_FOUND",
-        });
-      }
-      return todo;
-    }),
-
-  addTodo: publicProcedure
-    .meta({ openapi: { method: "POST", path: "/todos" } })
-    .input(z.object({ title: z.string() }))
-    .output(z.string())
-    .mutation(req => {
-      addTodo(req.input.title);
-      return "Todo added";
-    }),
-
-  completeTodo: editProcedure
-    .meta({ openapi: { method: "PUT", path: "/todos/{id}", protect: true } })
-    .input(z.object({ id: z.string().uuid() }))
-    .output(z.object({ message: z.string(), todo: Todo }))
-    .mutation(req => {
-      const completedTodo = completeTodo(req.input.id);
-      if (!completedTodo)
-        throw new TRPCError({
-          message: "Todo not found",
-          code: "NOT_FOUND",
-        });
-      return {
-        message: "Todo completed",
-        todo: completedTodo,
-      };
-    }),
-
-  deleteTodo: deleteProcedure
-    .meta({ openapi: { method: "DELETE", path: "/todos/{id}", protect: true } })
-    .input(z.object({ id: z.string().uuid() }))
-    .output(z.object({ message: z.string(), todo: Todo }))
-    .mutation(req => {
-      const deletedTodo = deleteTodo(req.input.id);
-      if (!deletedTodo)
-        throw new TRPCError({
-          message: "Todo not found",
-          code: "NOT_FOUND",
-        });
-      return {
-        message: "Todo deleted",
-        todo: deletedTodo,
-      };
-    }),
+  // addTodo: "/todo"
+  // TODO
+  
+  // completeTodo: "/todo/{id}"
+  // TODO
+  
+  // deleteTodo "/todo/{id}"
+  // TODO
 });

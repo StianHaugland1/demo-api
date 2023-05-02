@@ -2,10 +2,10 @@ import { randomUUID } from "crypto";
 import { Todo } from "../types/Todo";
 
 const todos: Todo[] = [
-  { id: randomUUID(), title: "Vask bilen", completed: false },
-  { id: randomUUID(), title: "Rydd huset", completed: false },
-  { id: randomUUID(), title: "Gå en tur", completed: false },
-  { id: randomUUID(), title: "Les en bok", completed: false },
+  { id: "21c7bf91-ec82-4db9-b4df-f7b6eab757a4", title: "Vask bilen", completed: false },
+  { id: "dcb1435c-f8eb-4b8c-ba0d-187061c29c22", title: "Rydd huset", completed: false },
+  { id: "89e1cb4b-bb2e-4819-bd76-e97089ad68a8", title: "Gå en tur", completed: false },
+  { id: "91353a97-a183-4900-b2a0-a3cea4147756", title: "Les en bok", completed: false },
 ];
 
 const findTodoIndex = (id: string) => {

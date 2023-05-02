@@ -19,6 +19,8 @@ trpcExpress.CreateExpressContextOptions) => {
 
 type Context = inferAsyncReturnType<typeof createContext>;
 
+// init trpc with context and openapi
 export const t = initTRPC.meta<OpenApiMeta>().context<Context>().create();
 
 export const { router } = t;
+
