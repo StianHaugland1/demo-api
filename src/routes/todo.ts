@@ -21,18 +21,18 @@ const editProcedure = validTokenAndScopeProcedure(["edit:todos"]);
 const deleteProcedure = validTokenAndScopeProcedure(["delete:todos"]);
 
 export const todoRouter = router({
-  // getTodos: "/todos" 
+  // getTodos: "/todos"
   // TODO
   
-  // getTodo "/todo/{id}"
+  // getTodo "/todos/{id}"
   // TODO
 
-  // addTodo: "/todo"
+  // addTodo: "/todos"
   // TODO
   
-  // completeTodo: "/todo/{id}"
+  // completeTodo: "/todos/{id}"
   // TODO
   
-  // deleteTodo "/todo/{id}"
+  // deleteTodo "/todos/{id}"
   // TODO
 });
