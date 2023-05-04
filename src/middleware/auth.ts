@@ -35,6 +35,8 @@ const isAuthed = t.middleware(async ({ next, ctx }) => {
 
 const validateScopes = (requiredScopes: string[]) => {
   return t.middleware(async ({ next, ctx }) => {
+    const validScopes = requiredScopes.every((scope) => ctx.scopes?.includes(scope))
+    if(!validScopes) throw new TRPCError({ code: "FORBIDDEN", message: "invalid scopes"})
     
     return next();
   })
