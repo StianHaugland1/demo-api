@@ -23,4 +23,3 @@ type Context = inferAsyncReturnType<typeof createContext>;
 export const t = initTRPC.meta<OpenApiMeta>().context<Context>().create();
 
 export const { router } = t;
-

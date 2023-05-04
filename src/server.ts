@@ -11,7 +11,6 @@ import { createContext } from "./trpc";
 // init express
 const app = express();
 
-
 // Handle incoming tRPC requests
 app.use(
   "/api/trpc",
@@ -36,7 +35,6 @@ app.listen(PORT, () => {
   console.info(`Server running on port ${PORT}`);
 });
 
-
 // (async() => {
 //   const test = appRouter
 //     .createCaller({
@@ -48,6 +46,5 @@ app.listen(PORT, () => {
 //     // .todo.getTodo({id:1});
 //     .todo.completeTodo({id:"89e1cb4b-bb2e-4819-bd76-e97089ad68a8"})
 
-    
 //   console.info(await test)
 // })()
